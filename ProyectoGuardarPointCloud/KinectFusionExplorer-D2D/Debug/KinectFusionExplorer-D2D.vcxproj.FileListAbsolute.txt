@@ -1,0 +1,2 @@
+D:\OneDrive - Universidade de Vigo\aaaa\GRADO INGENIERÍA\4º CURSO\TFG\Kinect\ProyectoGuardarPointCloud\KinectFusionExplorer-D2D\Debug\KinectFusionExplorer-D2D.exe
+D:\OneDrive - Universidade de Vigo\aaaa\GRADO INGENIERÍA\4º CURSO\TFG\Kinect\ProyectoGuardarPointCloud\KinectFusionExplorer-D2D\Debug\KinectFusionExplorer-D2D.pdb

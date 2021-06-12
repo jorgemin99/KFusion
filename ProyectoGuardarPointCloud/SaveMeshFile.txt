@@ -1,0 +1,149 @@
+HRESULT CKinectFusionExplorer::SaveMeshFile(INuiFusionColorMesh* pMesh, KinectFusionMeshTypes saveMeshType)
+{
+    HRESULT hr = S_OK;
+
+    if (nullptr == pMesh)
+    {
+        return E_INVALIDARG;
+    }
+
+    CComPtr<IFileSaveDialog> pSaveDlg;
+
+    // Create the file save dialog object.
+    hr = pSaveDlg.CoCreateInstance(__uuidof(FileSaveDialog));
+
+    if (FAILED(hr))
+    {
+        return hr;
+    }
+
+    // Set the dialog title
+    hr = pSaveDlg->SetTitle(L"Save Kinect Fusion Mesh");
+    if (SUCCEEDED(hr))
+    {
+        // Set the button text
+        hr = pSaveDlg->SetOkButtonLabel (L"Save");
+        if (SUCCEEDED(hr))
+        {
+            // Set a default filename
+            if (Stl == saveMeshType)
+            {
+                hr = pSaveDlg->SetFileName(L"MeshedReconstruction.stl");
+            }
+            else if (Obj == saveMeshType)
+            {
+                hr = pSaveDlg->SetFileName(L"MeshedReconstruction.obj");
+            }
+            else if (Ply == saveMeshType)
+            {
+                hr = pSaveDlg->SetFileName(L"MeshedReconstruction.ply");
+            }
+
+            if (SUCCEEDED(hr))
+            {
+                // Set the file type extension
+                if (Stl == saveMeshType)
+                {
+                    hr = pSaveDlg->SetDefaultExtension(L"stl");
+                }
+                else if (Obj == saveMeshType)
+                {
+                    hr = pSaveDlg->SetDefaultExtension(L"obj");
+                }
+                else if (Ply == saveMeshType)
+                {
+                    hr = pSaveDlg->SetDefaultExtension(L"ply");
+                }
+
+                if (SUCCEEDED(hr))
+                {
+                    // Set the file type filters
+                    if (Stl == saveMeshType)
+                    {
+                        COMDLG_FILTERSPEC allPossibleFileTypes[] = {
+                            { L"Stl mesh files", L"*.stl" },
+                            { L"All files", L"*.*" }
+                        };
+
+                        hr = pSaveDlg->SetFileTypes(
+                            ARRAYSIZE(allPossibleFileTypes),
+                            allPossibleFileTypes);
+                    }
+                    else if (Obj == saveMeshType)
+                    {
+                        COMDLG_FILTERSPEC allPossibleFileTypes[] = {
+                            { L"Obj mesh files", L"*.obj" },
+                            { L"All files", L"*.*" }
+                        };
+
+                        hr = pSaveDlg->SetFileTypes(
+                            ARRAYSIZE(allPossibleFileTypes),
+                            allPossibleFileTypes );
+                    }
+                    else if (Ply == saveMeshType)
+                    {
+                        COMDLG_FILTERSPEC allPossibleFileTypes[] = {
+                            { L"Ply mesh files", L"*.ply" },
+                            { L"All files", L"*.*" }
+                        };
+
+                        hr = pSaveDlg->SetFileTypes(
+                            ARRAYSIZE(allPossibleFileTypes),
+                            allPossibleFileTypes );
+                    }
+
+                    if (SUCCEEDED(hr))
+                    {
+                        // Show the file selection box
+                        hr = pSaveDlg->Show(m_hWnd);
+
+                        // Save the mesh to the chosen file.
+                        if (SUCCEEDED(hr))
+                        {
+                            CComPtr<IShellItem> pItem;
+                            hr = pSaveDlg->GetResult(&pItem);
+
+                            if (SUCCEEDED(hr))
+                            {
+                                LPOLESTR pwsz = nullptr;
+                                hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pwsz);
+
+                                if (SUCCEEDED(hr))
+                                {
+                                    SetStatusMessage(L"Saving mesh file, please wait...");
+                                    SetCursor(LoadCursor(nullptr, MAKEINTRESOURCE(IDC_WAIT)));
+
+                                    if (Stl == saveMeshType)
+                                    {
+                                        hr = WriteBinarySTLMeshFile(pMesh, pwsz);
+                                    }
+                                    else if (Obj == saveMeshType)
+                                    {
+                                        hr = WriteAsciiObjMeshFile(pMesh, pwsz);
+                                    }
+                                    else if (Ply == saveMeshType)
+                                    {
+                                        hr = WriteAsciiPlyMeshFile(pMesh, pwsz, true, m_bColorCaptured);
+                                    }
+
+                                    CoTaskMemFree(pwsz);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return hr;
+}
+
+
+INuiFusionColorMesh *mesh = nullptr;
+        HRESULT hr = m_processor.CalculateMesh(&mesh);
+
+        if (SUCCEEDED(hr))
+        {
+            // Save mesh
+            hr = SaveMeshFile(mesh, m_saveMeshFormat);
