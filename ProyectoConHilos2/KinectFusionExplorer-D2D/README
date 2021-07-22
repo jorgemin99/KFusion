@@ -1,0 +1,3 @@
+En ProyectoConHilos2 (da fallos), se pretende crear un hilo de guardado en la clase KinectFusionSaver. 
+El hilo de procesado calcula la malla (Fusion Processor) . Y el programa de la ventana principal (KFusionExplorer) 
+envía la malla al hilo de guardado.
