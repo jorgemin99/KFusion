@@ -1,0 +1,5 @@
+﻿  KinectFusionExplorer.cpp
+D:\OneDrive - Universidade de Vigo\aaaa\GRADO INGENIERÍA\4º CURSO\TFG\Kinect\ProyectoConHilos2\KinectFusionExplorer-D2D\KinectFusionExplorer.cpp(484,67): warning C4302: 'conversión de tipo': truncamiento de 'LPWSTR' a 'WORD'
+  KinectFusionExplorer-D2D.vcxproj -> D:\OneDrive - Universidade de Vigo\aaaa\GRADO INGENIERÍA\4º CURSO\TFG\Kinect\ProyectoConHilos2\KinectFusionExplorer-D2D\Debug\KinectFusionExplorer-D2D.exe
+  C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409\Redist\Fusion\x86\Kinect20.Fusion.dll
+  1 archivo(s) copiado(s)
