@@ -1,0 +1,2 @@
+Proyecto sin ventana principal de aplicacion de Windows. Utiliza las interfaces de KFusion.
+Ejecución unifilar. Visualización con OpenCV. KFusionHelper se aprovecha para los métodos de WriteAsciiPLYMeshFile
